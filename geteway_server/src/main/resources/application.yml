@@ -1,0 +1,52 @@
+server:
+  port: 8888
+spring:
+  #系统名称
+  application:
+    name: gateway-server
+  #微服务配置
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      #注册中心
+      discovery:
+        enabled: true
+        server-addr: 127.0.0.1:8848
+        group: DEFAULT_GROUP
+    gateway:
+      discovery:
+        locator:
+          #开启从注册中心动态创建路由的功能
+          enabled: true
+          #使用小写服务名，默认是大写
+          lower-case-service-id: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowCredentials: true
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+      #配置路由路径
+      routes:
+        - id: oauth_server
+          uri: lb://oauth-server
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: business_server
+          uri: lb://business-server
+          predicates:
+            - Path=/bus/**
+          filters:
+            - StripPrefix=1
+  redis:
+    database: 3
+    port: 6379
+    host: 127.0.0.1
+    password: 123456

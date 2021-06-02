@@ -1,0 +1,41 @@
+##开启日志DEBUG级别，便于查看调试信息
+logging.level.org.springframework.security: DEBUG
+server:
+  port: 9998
+spring:
+  #系统名称
+  application:
+    name: auth-server
+    #数据库
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://47.103.117.178:3306/tp_auth?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: techpower
+    password: Qwer1234
+    #连接池
+    hikari:
+      connection-timeout: 30000
+      auto-commit: true
+      max-lifetime: 1800000
+      pool-name: auth-HikariCP
+      minimum-idle: 5
+      connection-test-query: SELECT 1
+      maximum-pool-size: 10
+      idle-timeout: 180000
+    #Redis
+  redis:
+    database: 3
+    port: 6379
+    host: localhost
+    password: 123456
+  #微服务配置
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      #注册中心
+      discovery:
+        enabled: true
+        server-addr: 127.0.0.1:8848
+        group: DEFAULT_GROUP
